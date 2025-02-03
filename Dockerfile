@@ -1,20 +1,11 @@
-# Utiliser l'image officielle Node.js LTS
-FROM node:18-alpine
+# Utilisation de l'image officielle Nginx
+FROM nginx:alpine
 
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+# Copier les fichiers du site web vers le dossier Nginx
+COPY ./www /usr/share/nginx/html
 
-# Copier les fichiers nécessaires
-COPY package.json package-lock.json ./
+# Exposer le port 80 pour accéder au serveur
+EXPOSE 80
 
-# Installer les dépendances
-RUN npm install --omit=dev
-
-# Copier le reste des fichiers du projet
-COPY . .
-
-# Exposer le port 3000
-EXPOSE 3000
-
-# Lancer le serveur
-CMD ["node", "server.js"]
+# Lancer Nginx
+CMD ["nginx", "-g", "daemon off;"]
